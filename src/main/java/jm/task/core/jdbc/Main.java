@@ -10,8 +10,8 @@ public class Main {
 
         userService.createUsersTable();
 
-        userService.saveUser("Billy", "Herington", (byte)32);
-        userService.saveUser("Van", "Darkholm", (byte) 35);
+        userService.saveUser("Billy", "Genie", (byte)32);
+        userService.saveUser("Van", "Kachalkin", (byte) 35);
         userService.saveUser("Uncle", "Bogdan", (byte) 40);
 
         userService.getAllUsers().forEach(System.out::println);
