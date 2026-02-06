@@ -23,6 +23,8 @@ public class UserDaoJDBCImpl implements UserDao {
             statement.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
         }
 
     }
@@ -33,6 +35,8 @@ public class UserDaoJDBCImpl implements UserDao {
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (RuntimeException e) {
             e.printStackTrace();
         }
     }
@@ -45,8 +49,9 @@ public class UserDaoJDBCImpl implements UserDao {
             ps.setString(2, lastName);
             ps.setByte(3, age);
             ps.executeUpdate();
-            System.out.println("Добавлен пользователь с именем - " + name + " в базу данных");
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (RuntimeException e) {
             e.printStackTrace();
         }
     }
@@ -58,7 +63,9 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-        e.printStackTrace();
+            e.printStackTrace();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
         }
     }
 
@@ -77,6 +84,8 @@ public class UserDaoJDBCImpl implements UserDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
         }
         return users;
     }
@@ -88,6 +97,8 @@ public class UserDaoJDBCImpl implements UserDao {
     Statement statement = connection.createStatement()){
         statement.executeUpdate(sql);
     } catch (SQLException e) {
+        e.printStackTrace();
+    } catch (RuntimeException e) {
         e.printStackTrace();
         }
     }
