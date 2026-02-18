@@ -2,7 +2,13 @@ package jm.task.core.jdbc.util;
 
 import jm.task.core.jdbc.model.User;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
+
+import javax.imageio.spi.ServiceRegistry;
+import java.util.Properties;
 
 public class Util {
     // set up a database connection
@@ -13,29 +19,37 @@ public class Util {
         try {
             Configuration configuration = new Configuration();
 
-            configuration.setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
-            configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/example_schema");
-            configuration.setProperty("hibernate.connection.username", "root");
-            configuration.setProperty("hibernate.connection.password", "1234567890D");
+            Properties settings = new Properties();
 
-            configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+            settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
+            settings.put(Environment.URL, "jdbc:mysql://localhost:3306/example_schema?useSSL=false&serverTimezone=UTC");
+            settings.put(Environment.USER, "root");
+            settings.put(Environment.PASS, "1234567890D");
 
-            configuration.setProperty("hibernate.hbm2ddl.auto", "update");
+            settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
+            settings.put(Environment.SHOW_SQL, "true");
+            settings.put(Environment.HBM2DDL_AUTO, "update");
+            settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
 
-            configuration.setProperty("hibernate.show_sql", "true");
+            configuration.setProperties(settings);
+            configuration.addAnnotatedClass(jm.task.core.jdbc.model.User.class);
 
-            configuration.addAnnotatedClass(User.class);
+            StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+                    .applySettings(configuration.getProperties()).build();
 
-            return configuration.buildSessionFactory();
+            return configuration.buildSessionFactory(serviceRegistry);
         } catch (Exception e) {
-            throw new RuntimeException("Ошибка при создании Сессии", e);
+            System.err.println("Ошибка при создании Сессии: " + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
         public static SessionFactory getSessionFactory(){
             return sessionFactory;
         }
         public static void shutdown(){
-            getSessionFactory().close();
+        if (sessionFactory != null) {
+            sessionFactory.close();
+        }
     }
 }
 /*        private static final String url = "jdbc:mysql://localhost:3306/example_schema";
