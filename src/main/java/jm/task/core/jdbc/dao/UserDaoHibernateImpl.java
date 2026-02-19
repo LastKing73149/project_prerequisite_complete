@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
 
+import java.util.Collections;
 import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
@@ -81,6 +82,9 @@ public class UserDaoHibernateImpl implements UserDao {
     public List<User> getAllUsers() {
         try (Session session = Util.getSessionFactory().openSession()) {
             return session.createQuery("FROM User", User.class).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
         }
     }
 
